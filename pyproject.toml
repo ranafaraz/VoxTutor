@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voxtutor"
+version = "0.1.0"
+description = "Offline pronunciation-assessment benchmark: forced alignment and likelihood-ratio (GOP) normalization recover mispronunciations against a known ground truth, where naive scoring collapses under speaking-rate variation and channel noise -- a 2x2 ablation dissociation, numpy-only, no audio downloads."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Rana Faraz" }]
+keywords = [
+  "speech", "pronunciation-assessment", "mispronunciation-detection",
+  "goodness-of-pronunciation", "gop", "forced-alignment", "dtw",
+  "computer-assisted-pronunciation-training", "capt", "benchmark",
+]
+classifiers = [
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Numpy is the only runtime dependency. Utterances are *synthesized* from a known
+# phoneme inventory with known injected mispronunciations (so the ground truth is exact),
+# and every scorer (forced alignment via DTW, Goodness-of-Pronunciation, the raw and
+# fixed-segmentation ablations) is implemented on numpy -- no acoustic model, no audio
+# files, no downloads, no API keys. CI runs the whole benchmark offline.
+dependencies = ["numpy>=1.23"]
+
+[project.optional-dependencies]
+# Optional cross-check backend: recompute the DTW frame-template cost matrix with
+# scipy.spatial.distance.cdist and the AUROC with scipy.stats.mannwhitneyu, and confirm
+# both match the hand-rolled numpy implementations.
+scipy = ["scipy>=1.10"]
+dev = [
+  "pytest>=7.0",
+  "ruff>=0.1",
+]
+
+[project.scripts]
+voxtutor = "voxtutor.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/ranafaraz/VoxTutor"
+Repository = "https://github.com/ranafaraz/VoxTutor"
+
+[tool.setuptools.packages.find]
+include = ["voxtutor*", "evals*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+ignore = ["E741"]
+
+[tool.ruff.lint.per-file-ignores]
+# __init__ pins BLAS threads via os.environ *before* importing numpy-backed submodules,
+# so those imports legitimately sit below executable code.
+"voxtutor/__init__.py" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
