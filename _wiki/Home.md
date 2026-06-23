@@ -1,3 +1,0 @@
-# VoxTutor Wiki
-
-Welcome.
