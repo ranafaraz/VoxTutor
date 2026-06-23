@@ -1,5 +1,9 @@
 # VoxTutor
 
+[![Live demo](https://img.shields.io/badge/live%20demo-voxtutor.dexdevs.com-brightgreen?logo=rocket)](https://voxtutor.dexdevs.com)
+
+> **▶ Live demo: [voxtutor.dexdevs.com](https://voxtutor.dexdevs.com)** — run it in your browser, free offline backend. Browse all 10 portfolio demos via the *all demos* link.
+
 [![CI](https://github.com/ranafaraz/VoxTutor/actions/workflows/ci.yml/badge.svg)](https://github.com/ranafaraz/VoxTutor/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://github.com/ranafaraz/VoxTutor)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
